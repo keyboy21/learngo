@@ -1,14 +1,10 @@
-package main
+package learngo
 
 import (
-	"context"
 	"fmt"
 	"math"
 	"math/rand"
-	"os"
-	"os/signal"
 	"sync/atomic"
-	"syscall"
 
 	// "math/rand"
 	"runtime"
@@ -16,7 +12,6 @@ import (
 	"sync"
 	"time"
 
-	"golang.org/x/sync/errgroup"
 )
 
 var (
@@ -229,15 +224,13 @@ type Exapmle struct {
 	Value string
 }
 
-type Myinterface interface{}
-
-func example() Myinterface {
+func example() any {
 	var e *Exapmle
 
 	return e
 }
 
-func example2() Myinterface {
+func example2() any {
 	return nil
 }
 
@@ -536,48 +529,6 @@ func variables() {
 	fmt.Println(sum)
 }
 
-func functions() {
-	var personPrint = func(userName string) {
-		fmt.Println(userName)
-	}
-	var personGreet2 = func(firstName, lastName string) {
-		var userName = fmt.Sprintf("%v %v", firstName, lastName)
-		fmt.Println(userName)
-	}
-	personPrint(userName)
-	personGreet2(userName, "Doe")
-	// closure functions in go
-	var dollar = 30
-
-	getDollar := func() int {
-		return dollar
-	}
-	fmt.Println(getDollar())
-	dollar = 40
-	fmt.Println(getDollar())
-
-	var DivideBy2 = createDivider(2)
-	fmt.Println(DivideBy2(10))
-	fmt.Println(DivideBy2(20))
-
-	var Sum = calculate(1, 2, add)
-	fmt.Println("Sum = ", Sum)
-
-	returnUsername = func(name string) string { return name }
-
-	fmt.Println(returnUsername("John"))
-
-	returnAge = func(birthYear uint) (age int, currentYear int) {
-		currentYear = time.Now().Year()
-		age = currentYear - int(birthYear)
-		return
-		// return age, cyear
-	}
-
-	age, currentYear := returnAge(2000)
-	fmt.Printf("Age is %v and current year is %v\n", age, currentYear)
-}
-
 func conditionalExpression() {
 	if age := 20; age > 18 {
 		fmt.Println("User is adult")
@@ -590,61 +541,6 @@ func conditionalExpression() {
 		fmt.Println("User is adult")
 	} else {
 		fmt.Println("User is too young")
-	}
-}
-
-func loops() {
-	for x := 1.0; x <= 5.0; x++ {
-		result := Sqrt(x)
-		fmt.Printf("Square root of %v is %v\n", x, result)
-		fmt.Printf("Difference from math.Sqrt: %v\n", math.Sqrt(x)-result)
-		fmt.Println()
-	}
-
-	sum := 0
-	for i := 0; i < 10; i++ {
-		sum += 10
-	}
-	fmt.Println(sum)
-
-	sum2 := 1
-	for sum2 < 200 {
-		sum2 += sum2
-	}
-	fmt.Println(sum2)
-
-	// continue , break, labels ==============================================
-	// continue will skip the current iteration and continue to the next one
-	for i := 0; i < 20; i++ {
-		if i%2 == 1 {
-			continue
-		}
-
-		fmt.Println("i = ", i)
-	}
-
-	// 'break' will break the loop and end the loop
-	for i := 1; i < 20; i++ {
-		if i > 10 {
-			break
-		}
-		fmt.Println("i = ", i)
-	}
-
-	// 'labels' can be used to break or continue outer loops
-Outer:
-	for i := 1; i <= 20; i++ {
-	Inner:
-		for j := 1; j <= 10; j++ {
-			fmt.Printf("i = %v, j = %v\n", i, j)
-			if i == 10 {
-				// you can use break and continue(skip) with labels
-				continue Outer
-			}
-			if j == 15 {
-				continue Inner
-			}
-		}
 	}
 }
 
@@ -692,7 +588,7 @@ func switchStatement() {
 		fmt.Printf("Operation system is %v\n", os)
 	}
 
-	whatAmI := func(i interface{}) {
+	whatAmI := func(i any) {
 		switch t := i.(type) {
 		case bool:
 			fmt.Println("I'm a bool")
@@ -1022,283 +918,6 @@ func withRWMutex() {
 
 }
 
-func channels() {
-	var nilChannel chan int
-
-	fmt.Printf("Type: %T, Value: %v\n", nilChannel, nilChannel)
-	fmt.Printf("Len: %v, Cap: %v\n", len(nilChannel), cap(nilChannel))
-
-	// write to chanel blocks forever
-	// nilChannel <- 1
-
-	// read from chanel
-	// <- nilChannel
-
-	// close chanel
-	// close(nilChannel)
-
-	unBufferedChanel := make(chan int)
-	fmt.Printf("Type: %T, Value: %v\n", unBufferedChanel, unBufferedChanel)
-	fmt.Printf("Len: %v, Cap: %v\n", len(unBufferedChanel), cap(unBufferedChanel))
-
-	// block until smb reads
-	// unBufferedChanel <- 1
-	// <- unBufferedChanel
-
-	// block on reading then write
-	go func(chanForWriting chan<- int) {
-		time.Sleep(time.Second)
-		chanForWriting <- 1
-	}(unBufferedChanel)
-
-	val := <-unBufferedChanel
-	fmt.Println(val)
-
-	go func(chanForReading <-chan int) {
-		time.Sleep(time.Second)
-		value := <-chanForReading
-		fmt.Println(value)
-	}(unBufferedChanel)
-
-	unBufferedChanel <- 10
-
-	// panic
-	close(unBufferedChanel)
-	close(unBufferedChanel)
-}
-
-func bufferedChannel() {
-	bufferedChan := make(chan int, 2)
-	fmt.Printf("Len: %v, Cap: %v\n", len(bufferedChan), cap(bufferedChan))
-
-	// doesn't block while buffer not full
-	bufferedChan <- 2
-	bufferedChan <- 4
-
-	fmt.Printf("Len: %v, Cap: %v\n", len(bufferedChan), cap(bufferedChan))
-
-	// blocks to write, buffer is full
-	// bufferedChan <- 6
-
-	fmt.Println(<-bufferedChan)
-	fmt.Println(<-bufferedChan)
-
-	fmt.Printf("Len: %v, Cap: %v\n", len(bufferedChan), cap(bufferedChan))
-
-	// go func(chanForWriting chan<- int) {
-	// 	chanForWriting <- 20
-	// 	chanForWriting <- 21
-	// }(bufferedChan)
-
-	// block to read, buffer is empty, no write, deadlock
-	fmt.Println(<-bufferedChan)
-	fmt.Println(<-bufferedChan)
-
-}
-
-func chanWithRange() {
-	bufferedChan := make(chan int, 3)
-	numbers := []int{1, 2, 4, 3}
-
-	go func() {
-		for _, num := range numbers {
-			bufferedChan <- num
-		}
-		close(bufferedChan)
-	}()
-
-	for {
-		// v := <-bufferedChan
-		v, ok := <-bufferedChan
-		fmt.Println(v, ok)
-		if !ok {
-			break
-		}
-	}
-
-	bufferedChan = make(chan int, 10)
-
-	go func() {
-		for _, num := range numbers {
-			bufferedChan <- num
-		}
-		close(bufferedChan)
-	}()
-
-	for v := range bufferedChan {
-		fmt.Println(v)
-	}
-
-	unBufferedChan := make(chan int)
-
-	go func() {
-		for _, val := range numbers {
-			unBufferedChan <- val
-		}
-		close(unBufferedChan)
-	}()
-
-	for v := range unBufferedChan {
-		fmt.Println(v)
-	}
-}
-
-func baseSelect() {
-	bufferedChan := make(chan string, 2)
-	bufferedChan <- "First"
-	select {
-	case str := <-bufferedChan:
-		fmt.Println("read:", str)
-	case bufferedChan <- "Second":
-		fmt.Println("write:", <-bufferedChan)
-	}
-
-	unbuffChan := make(chan int)
-
-	go func() {
-		time.Sleep(time.Second)
-		unbuffChan <- 1
-	}()
-
-	select {
-	case bufferedChan <- "thrid":
-		fmt.Println("Write third")
-	case value := <-unbuffChan:
-		fmt.Println("block reading:", value)
-	case time := <-time.After(time.Millisecond * 1000):
-		fmt.Println("time's up:", time)
-	default:
-		fmt.Println("default case")
-	}
-
-	resultChan := make(chan int)
-	timer := time.After(time.Second) // timer outside loop
-
-	go func() {
-		defer close(resultChan)
-
-		for i := 0; i < 10000; i++ {
-			select {
-			case <-timer:
-				fmt.Println("Time's up")
-				return
-			default:
-				time.Sleep(time.Nanosecond)
-				resultChan <- i
-			}
-		}
-	}()
-
-	for value := range resultChan {
-		fmt.Println("Result:", value)
-	}
-}
-
-func graceFullShoutDown() {
-	signalChan := make(chan os.Signal, 1)
-	timer := time.After(10 * time.Second)
-
-	signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
-
-	select {
-	case <-timer:
-		fmt.Println("time up")
-		return
-	case val := <-signalChan:
-		fmt.Println("Stopped signal type:", val)
-	}
-}
-
-func baseContext() {
-	ctx := context.Background()
-	fmt.Println("ctx", ctx)
-
-	ctxTodo := context.TODO()
-	fmt.Println("ctxTodo", ctxTodo)
-
-	ctxWithValue := context.WithValue(ctx, "name", "John")
-	val := ctxWithValue.Value("name")
-	fmt.Println(val)
-
-	ctxWithCancel, cancel := context.WithCancel(ctxWithValue)
-	fmt.Println(ctxWithCancel.Err())
-	cancel()
-	fmt.Println(ctxWithCancel.Err())
-
-	ctxWithDeadline, cancel := context.WithDeadline(ctx, time.Now().Add(time.Second*3))
-	defer cancel()
-	ctxTime, ok := ctxWithDeadline.Deadline()
-	fmt.Printf("time: %v, ok: %v\n", ctxTime, ok)
-	fmt.Println(ctxWithDeadline.Err())
-	fmt.Println(<-ctxWithDeadline.Done())
-
-	ctxWithTimeOut, cancel := context.WithTimeout(ctx, time.Second*5)
-	defer cancel()
-	fmt.Println(ctxWithTimeOut.Done())
-
-}
-
-func workerPool() {
-	// ctx, cancel := context.WithCancel(context.Background())
-	ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond*20)
-	defer cancel()
-
-	// var wg sync.WaitGroup
-	wg := sync.WaitGroup{}
-	// fmt.Printf("wg: %v", wg)
-	// wg := &sync.WaitGroup{}
-
-	numberToProcess, processedNumber := make(chan int, 5), make(chan int, 5)
-
-	for i := 0; i < runtime.NumCPU(); i++ {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			worker(ctx, numberToProcess, processedNumber)
-		}()
-	}
-
-	go func() {
-		for i := 0; i < 1000; i++ {
-			if i == 500 {
-				cancel()
-			}
-			numberToProcess <- i
-		}
-		close(numberToProcess)
-	}()
-
-	go func() {
-		wg.Wait()
-		close(processedNumber)
-	}()
-
-	var counter int
-	for resultValue := range processedNumber {
-		counter++
-		fmt.Println(resultValue)
-	}
-
-	fmt.Println(counter)
-}
-
-func worker(ctx context.Context, toProcess <-chan int, processed chan<- int) {
-	for {
-		select {
-		case <-ctx.Done():
-			// fmt.Println("Done")
-			return
-		case val, ok := <-toProcess:
-			if !ok {
-				return
-			}
-			time.Sleep(time.Millisecond)
-			processed <- val * val
-
-		}
-	}
-}
-
 func makeRequest(num int) <-chan string {
 	reqChan := make(chan string)
 
@@ -1310,123 +929,7 @@ func makeRequest(num int) <-chan string {
 	return reqChan
 }
 
-func chanAsMutex() {
-	var counter int
 
-	mutexChan := make(chan struct{}, 1)
-	wg := sync.WaitGroup{}
-	// mu := sync.Mutex{}
-
-	for i := 0; i < 1000; i++ {
-		wg.Add(1)
-
-		go func() {
-			defer wg.Done()
-			mutexChan <- struct{}{}
-
-			// mu.Lock()
-			counter++
-			// mu.Unlock()
-
-			<-mutexChan
-		}()
-	}
-
-	wg.Wait()
-
-	fmt.Println(counter)
-
-}
-
-func withoutErrorGroup() {
-	var err error
-
-	ctx, cancel := context.WithCancel(context.Background())
-	wg := sync.WaitGroup{}
-
-	wg.Add(3)
-
-	go func() {
-		time.Sleep(time.Second)
-		defer wg.Done()
-
-		select {
-		case <-ctx.Done():
-			return
-		default:
-			fmt.Println("first started")
-			time.Sleep(time.Second)
-		}
-
-	}()
-
-	go func() {
-		defer wg.Done()
-
-		select {
-		case <-ctx.Done():
-			return
-		default:
-			fmt.Println("second started")
-			err = fmt.Errorf("any Error")
-			cancel()
-		}
-
-	}()
-
-	go func() {
-		defer wg.Done()
-
-		select {
-		case <-ctx.Done():
-			return
-		default:
-			time.Sleep(time.Second * 10)
-			fmt.Println("third started")
-		}
-
-	}()
-
-	wg.Wait()
-	fmt.Println(err)
-}
-
-func withErrorGroup() {
-	g, ctx := errgroup.WithContext(context.Background())
-
-	g.Go(func() error {
-		time.Sleep(time.Second)
-
-		select {
-		case <-ctx.Done():
-			return nil
-		default:
-			fmt.Println("First started")
-			time.Sleep(time.Second)
-			return nil
-		}
-	})
-
-	g.Go(func() error {
-		fmt.Println("Start second")
-		return fmt.Errorf("Unexpected error in 2")
-	})
-
-	g.Go(func() error {
-		select {
-		case <-ctx.Done():
-		default:
-			fmt.Println("thrid started")
-			time.Sleep(time.Second)
-		}
-		return nil
-	})
-
-	if err := g.Wait(); err != nil {
-		fmt.Println("Error", err)
-	}
-
-}
 
 func withAtomicAdd() {
 	start := time.Now()
@@ -1689,7 +1192,7 @@ func main() {
 	// 	fmt.Println("can't run")
 	// }
 
-	// var emptyInterface interface{} = john
+	// var emptyInterface any = john
 	// fmt.Printf("Type:%T, Value:%#v\n", emptyInterface, emptyInterface)
 
 	// Yusufboy := User{
@@ -1744,41 +1247,6 @@ func main() {
 	// fmt.Printf("Certificate %v \n", car.Certificate)
 	// car.Name = "Ferrari"
 	// fmt.Printf("New name: %v", car.Name)
-
-	// MARK: channels
-	// var channel chan int // by default channel is nil
-	// fmt.Println("channel is nil:", channel == nil)
-	// fmt.Printf("Type: %T , Value: %#v\n", channel, channel)
-	// fmt.Printf("Length: %d , Capacity: %d\n", len(channel), cap(channel))
-
-	// write to nil channel blocks forever: deadlock
-	// channel <- 1
-
-	// read from nil channel blocks forever: deadlock
-	// <-channel
-
-	// close nil channel will raise panic
-	// close(channel)
-
-	// var unBufferedChannel = make(chan int)
-	// fmt.Println("unBufferedChannel is nil:", unBufferedChannel == nil)
-	// fmt.Printf("Length: %d , Capacity: %d\n", len(unBufferedChannel), cap(unBufferedChannel))
-
-	// blocks until write to unbuffered channel
-	// unBufferedChannel <- 1
-
-	// blocks until read from unbuffered channel
-	// <-unBufferedChannel
-
-	// only read from unbuffered channel
-	// go func(chanToWrite chan<- int) {
-	// 	time.Sleep(time.Second)
-	// 	chanToWrite <- 3
-	// }(unBufferedChannel)
-
-	// value := <-unBufferedChannel
-
-	// fmt.Println("value:", value)
 
 	//=====================================================
 	// var ar = []Fruit{{"apple"}, {"banana"}, {"orange"}, {"apple"}, {"banana"}}
