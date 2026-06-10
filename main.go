@@ -1,4 +1,4 @@
-package learngo
+package main
 
 import (
 	"fmt"
@@ -7,15 +7,15 @@ import (
 	"sync/atomic"
 
 	// "math/rand"
+	"github.com/keyboy21/learngo/lessons"
 	"runtime"
 	"strings"
 	"sync"
 	"time"
-
 )
 
 var (
-	userName = "John"
+	UserName = "John"
 	userAge  = 23
 	userJob  = "Developer"
 )
@@ -80,13 +80,6 @@ const (
 func needInt(x int) int { return x*10 + 1 }
 func needFloat(x float64) float64 {
 	return x * 0.1
-}
-
-func sqrt(x float64) string {
-	if x < 0 {
-		return sqrt(-x) + "i"
-	}
-	return fmt.Sprint(math.Sqrt(x))
 }
 
 func pow(x, n, lim float64) float64 {
@@ -197,23 +190,6 @@ func squarePoint(x *int) {
 
 var returnUsername func(string) string
 var returnAge func(birthYear uint) (age int, currentYear int)
-
-func calculate(x, y int, action func(int, int) int) int {
-	return action(x, y)
-}
-
-func add(x, y int) int {
-	return x + y
-}
-
-// closure function in go
-func createDivider(divider int) func(y int) int {
-	dividerFun := func(y int) int {
-		return y / divider
-	}
-
-	return dividerFun
-}
 
 const (
 	min = 1
@@ -497,17 +473,6 @@ func WordCount(s string) map[string]int {
 		counts[word]++
 	}
 	return counts
-}
-
-func allOddSum(start, end int) int {
-	var result = 0
-	for i := start; i <= end; i++ {
-		if i%2 != 0 {
-			result += i
-		}
-	}
-
-	return result
 }
 
 func variables() {
@@ -929,9 +894,7 @@ func makeRequest(num int) <-chan string {
 	return reqChan
 }
 
-
-
-func withAtomicAdd() {
+func WithAtomicAdd() {
 	start := time.Now()
 	var (
 		wg      sync.WaitGroup
@@ -987,74 +950,32 @@ func AtomicVal() {
 	fmt.Println(val.CompareAndSwap(2, 3))
 }
 
-func sumGeneric[V ~int64 | float64](numbers []V) (sum V) {
-	for _, num := range numbers {
-		sum = sum + num
-	}
-	return
-}
-
-func contains[T comparable](elements []T, element T) bool {
-	for _, val := range elements {
-		if val == element {
-			return true
-		}
-	}
-	return false
-}
-
-func showAny[T any](val ...T) {
-	fmt.Println(val)
-}
-
-type MyNumber interface {
-	~int32 | int64 | float64
-}
-
-type Numbers[T MyNumber] []T
-
-func unionInterfaceAndType() {
-	var ints Numbers[int32]
-	ints = append(ints, []int32{124, 235, 23, 523}...)
-
-	floats := Numbers[float64]{1.24, 345, 456.456}
-	fmt.Println(floats)
-
-}
-
-type CustomInt int64
-
-func typeApproximation() {
-	customInts := []CustomInt{2, 3, 5}
-
-	intsSum := sumGeneric(customInts)
-	fmt.Println(intsSum)
-}
-
 func main() {
 
-	ints := []int64{1, 2, 35}
-	floats := []float64{2, 235, 346, 457, 457}
-	intsSum := sumGeneric(ints)
-	fmt.Println(intsSum)
-	fmt.Println(sumGeneric[float64](floats))
-	fmt.Println(contains(ints, 2))
+	learngo.SimpleReader()
 
-	users := []Person{
-		{
-			name: "John",
-			age:  25,
-		},
-		{
-			name: "Doe",
-			age:  23,
-		},
-	}
+	// ints := []int64{1, 2, 35}
+	// floats := []float64{2, 235, 346, 457, 457}
+	// intsSum := learngo.SumGeneric(ints)
+	// fmt.Println(intsSum)
+	// fmt.Println(learngo.SumGeneric[float64](floats))
+	// fmt.Println(contains(ints, 2))
 
-	fmt.Println(contains(users, Person{
-		name: "Doe",
-		age:  23,
-	}))
+	// users := []Person{
+	// 	{
+	// 		name: "John",
+	// 		age:  25,
+	// 	},
+	// 	{
+	// 		name: "Doe",
+	// 		age:  23,
+	// 	},
+	// }
+
+	// fmt.Println(contains(users, Person{
+	// 	name: "Doe",
+	// 	age:  23,
+	// }))
 
 	// AtomicVal()
 

@@ -10,9 +10,7 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-
-
-func baseContext() {
+func BaseContext() {
 	ctx := context.Background()
 	fmt.Println("ctx", ctx)
 
@@ -41,7 +39,7 @@ func baseContext() {
 
 }
 
-func workerPool() {
+func WorkerPool() {
 	// ctx, cancel := context.WithCancel(context.Background())
 	ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond*20)
 	defer cancel()
@@ -57,7 +55,7 @@ func workerPool() {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			worker(ctx, numberToProcess, processedNumber)
+			Worker(ctx, numberToProcess, processedNumber)
 		}()
 	}
 
@@ -85,7 +83,7 @@ func workerPool() {
 	fmt.Println(counter)
 }
 
-func worker(ctx context.Context, toProcess <-chan int, processed chan<- int) {
+func Worker(ctx context.Context, toProcess <-chan int, processed chan<- int) {
 	for {
 		select {
 		case <-ctx.Done():
@@ -102,7 +100,7 @@ func worker(ctx context.Context, toProcess <-chan int, processed chan<- int) {
 	}
 }
 
-func withoutErrorGroup() {
+func WithoutErrorGroup() {
 	var err error
 
 	ctx, cancel := context.WithCancel(context.Background())
@@ -155,7 +153,7 @@ func withoutErrorGroup() {
 	fmt.Println(err)
 }
 
-func withErrorGroup() {
+func WithErrorGroup() {
 	g, ctx := errgroup.WithContext(context.Background())
 
 	g.Go(func() error {

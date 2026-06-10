@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func baseSelect() {
+func BaseSelect() {
 	bufferedChan := make(chan string, 2)
 	bufferedChan <- "First"
 	select {
@@ -59,7 +59,7 @@ func baseSelect() {
 	}
 }
 
-func graceFullShoutDown() {
+func GraceFullShoutDown() {
 	signalChan := make(chan os.Signal, 1)
 	timer := time.After(10 * time.Second)
 

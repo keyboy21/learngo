@@ -5,6 +5,27 @@ import (
 	"time"
 )
 
+var (
+	userName = "John"
+)
+
+// closure function in go
+func CreateDivider(divider int) func(y int) int {
+	dividerFun := func(y int) int {
+		return y / divider
+	}
+
+	return dividerFun
+}
+
+func Calculate(x, y int, action func(int, int) int) int {
+	return action(x, y)
+}
+
+func Add(x, y int) int {
+	return x + y
+}
+
 func functions() {
 	var personPrint = func(userName string) {
 		fmt.Println(userName)
@@ -25,18 +46,18 @@ func functions() {
 	dollar = 40
 	fmt.Println(getDollar())
 
-	var DivideBy2 = createDivider(2)
+	var DivideBy2 = CreateDivider(2)
 	fmt.Println(DivideBy2(10))
 	fmt.Println(DivideBy2(20))
 
-	var Sum = calculate(1, 2, add)
+	var Sum = Calculate(1, 2, Add)
 	fmt.Println("Sum = ", Sum)
 
-	returnUsername = func(name string) string { return name }
+	returnUsername := func(name string) string { return name }
 
 	fmt.Println(returnUsername("John"))
 
-	returnAge = func(birthYear uint) (age int, currentYear int) {
+	returnAge := func(birthYear uint) (age int, currentYear int) {
 		currentYear = time.Now().Year()
 		age = currentYear - int(birthYear)
 		return

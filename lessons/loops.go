@@ -5,11 +5,18 @@ import (
 	"math"
 )
 
+func sqrt(x float64) string {
+	if x < 0 {
+		return sqrt(-x) + "i"
+	}
+	return fmt.Sprint(math.Sqrt(x))
+}
+
 func loops() {
 	for x := 1.0; x <= 5.0; x++ {
-		result := Sqrt(x)
+		result := sqrt(x)
 		fmt.Printf("Square root of %v is %v\n", x, result)
-		fmt.Printf("Difference from math.Sqrt: %v\n", math.Sqrt(x)-result)
+		fmt.Printf("Difference from math.Sqrt: %v\n, %v", math.Sqrt(x), result)
 		fmt.Println()
 	}
 

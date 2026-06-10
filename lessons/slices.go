@@ -6,6 +6,45 @@ import (
 	"sort"
 )
 
+func handle(list []int) {
+	list[1] = 10
+}
+
+func double(nums []int) {
+	// res := make([]int,0, len(nums))
+
+	for _, num := range nums {
+		num *= 2
+	}
+
+	// return res
+}
+
+type Exapmle struct {
+	Value string
+}
+
+func example() any {
+	var e *Exapmle
+
+	return e
+}
+
+func example2() any {
+	return nil
+}
+
+func AllOddSum(start, end int) int {
+	var result = 0
+	for i := start; i <= end; i++ {
+		if i%2 != 0 {
+			result += i
+		}
+	}
+
+	return result
+}
+
 func SlicesS() {
 	var asd []string
 	fmt.Printf("Type: %T, Value: %#v\n", asd, asd)
@@ -115,5 +154,5 @@ func SlicesS() {
 	fmt.Printf("Length %v\n", len(m2))
 	fmt.Printf("Capacity %v\n", cap(m2))
 
-	fmt.Println(allOddSum(1, 100))
+	fmt.Println(AllOddSum(1, 100))
 }

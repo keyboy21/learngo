@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func channels() {
+func Channels() {
 	var nilChannel chan int
 
 	fmt.Printf("Type: %T, Value: %v\n", nilChannel, nilChannel)
@@ -51,7 +51,7 @@ func channels() {
 	close(unBufferedChanel)
 }
 
-func bufferedChannel() {
+func BufferedChannel() {
 	bufferedChan := make(chan int, 2)
 	fmt.Printf("Len: %v, Cap: %v\n", len(bufferedChan), cap(bufferedChan))
 
@@ -80,7 +80,7 @@ func bufferedChannel() {
 
 }
 
-func chanWithRange() {
+func ChanWithRange() {
 	bufferedChan := make(chan int, 3)
 	numbers := []int{1, 2, 4, 3}
 
@@ -127,7 +127,7 @@ func chanWithRange() {
 	}
 }
 
-func chanAsMutex() {
+func ChanAsMutex() {
 	var counter int
 
 	mutexChan := make(chan struct{}, 1)
@@ -155,40 +155,37 @@ func chanAsMutex() {
 
 }
 
-
-
-
 // MARK: channels
-	// var channel chan int // by default channel is nil
-	// fmt.Println("channel is nil:", channel == nil)
-	// fmt.Printf("Type: %T , Value: %#v\n", channel, channel)
-	// fmt.Printf("Length: %d , Capacity: %d\n", len(channel), cap(channel))
+// var channel chan int // by default channel is nil
+// fmt.Println("channel is nil:", channel == nil)
+// fmt.Printf("Type: %T , Value: %#v\n", channel, channel)
+// fmt.Printf("Length: %d , Capacity: %d\n", len(channel), cap(channel))
 
-	// write to nil channel blocks forever: deadlock
-	// channel <- 1
+// write to nil channel blocks forever: deadlock
+// channel <- 1
 
-	// read from nil channel blocks forever: deadlock
-	// <-channel
+// read from nil channel blocks forever: deadlock
+// <-channel
 
-	// close nil channel will raise panic
-	// close(channel)
+// close nil channel will raise panic
+// close(channel)
 
-	// var unBufferedChannel = make(chan int)
-	// fmt.Println("unBufferedChannel is nil:", unBufferedChannel == nil)
-	// fmt.Printf("Length: %d , Capacity: %d\n", len(unBufferedChannel), cap(unBufferedChannel))
+// var unBufferedChannel = make(chan int)
+// fmt.Println("unBufferedChannel is nil:", unBufferedChannel == nil)
+// fmt.Printf("Length: %d , Capacity: %d\n", len(unBufferedChannel), cap(unBufferedChannel))
 
-	// blocks until write to unbuffered channel
-	// unBufferedChannel <- 1
+// blocks until write to unbuffered channel
+// unBufferedChannel <- 1
 
-	// blocks until read from unbuffered channel
-	// <-unBufferedChannel
+// blocks until read from unbuffered channel
+// <-unBufferedChannel
 
-	// only read from unbuffered channel
-	// go func(chanToWrite chan<- int) {
-	// 	time.Sleep(time.Second)
-	// 	chanToWrite <- 3
-	// }(unBufferedChannel)
+// only read from unbuffered channel
+// go func(chanToWrite chan<- int) {
+// 	time.Sleep(time.Second)
+// 	chanToWrite <- 3
+// }(unBufferedChannel)
 
-	// value := <-unBufferedChannel
+// value := <-unBufferedChannel
 
-	// fmt.Println("value:", value)
+// fmt.Println("value:", value)
