@@ -7,11 +7,12 @@ import (
 	"sync/atomic"
 
 	// "math/rand"
-	"github.com/keyboy21/learngo/lessons"
 	"runtime"
 	"strings"
 	"sync"
 	"time"
+
+	learngo "github.com/keyboy21/learngo/lessons"
 )
 
 var (
@@ -952,7 +953,10 @@ func AtomicVal() {
 
 func main() {
 
-	learngo.SimpleReader()
+	learngo.OsFile()
+	// learngo.SimpleWriter()
+	// learngo.SimpleReader()
+	// learngo.RowsReader()
 
 	// ints := []int64{1, 2, 35}
 	// floats := []float64{2, 235, 346, 457, 457}
@@ -986,7 +990,7 @@ func main() {
 	// fmt.Println("FirstResponse:", <-secondReq)
 
 	// chanAsMutex()
-	// withoutErrorGroup()
+	// learngo.WithoutErrorGroup()
 	// withErrorGroup()
 
 	// baseContext()
