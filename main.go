@@ -953,7 +953,9 @@ func AtomicVal() {
 
 func main() {
 
-	learngo.OsFile()
+  learngo.Input()
+	// learngo.OsFile()
+	
 	// learngo.SimpleWriter()
 	// learngo.SimpleReader()
 	// learngo.RowsReader()
