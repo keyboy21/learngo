@@ -952,10 +952,13 @@ func AtomicVal() {
 }
 
 func main() {
+	learngo.ReadFromIO()
+	// learngo.WriteToIO()
+	// learngo.WriteNumbersToFile()
 
-  learngo.Input()
+	// learngo.Input()
 	// learngo.OsFile()
-	
+
 	// learngo.SimpleWriter()
 	// learngo.SimpleReader()
 	// learngo.RowsReader()
