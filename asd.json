@@ -1,0 +1,10 @@
+{
+	"name": "John",
+	"age": 34,
+	"married": true,
+	"hobbies": ["football", "basketball"],
+	"address": {
+		"country": "USA",
+		"city": "Atlanta"
+	}
+}

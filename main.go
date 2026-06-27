@@ -952,7 +952,12 @@ func AtomicVal() {
 }
 
 func main() {
-	learngo.ReadFromIO()
+
+	learngo.JsonEncoderDecoder()
+	// learngo.UnknownJson()
+	// learngo.JsonMarshaling()
+
+	// learngo.ReadFromIO()
 	// learngo.WriteToIO()
 	// learngo.WriteNumbersToFile()
 
