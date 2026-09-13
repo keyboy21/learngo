@@ -1001,7 +1001,7 @@ func main() {
 
 	// chanAsMutex()
 	// learngo.WithoutErrorGroup()
-	// withErrorGroup()
+	// learngo.WithErrorGroup()
 
 	// baseContext()
 	// workerPool()
